@@ -1,0 +1,142 @@
+<?php View::content() ?>
+<?php echo Html::link("#","Atras","class='btn btn-default' onclick='history.back(1)'") ?>
+<?php $params=Router::get('parameters') ?>&nbsp;
+<br>
+<p>Es necesario un nuevo registro para asegurarse de que se no sobre-escriba un documento</p>
+<?php echo Html::link(Router::get('controller')."/".Router::get('action')."/".$params[0],"Nuevo Registro (borrar Campos)","class='btn btn-default' ") ?>
+<br>
+<?php  echo Form::open() ?>
+<?php foreach ($campos as $value): ?>
+	<label><?php echo $value['label'] ?></label>
+	<?php if (isset($id)): ?>
+		<input type="hidden" name="fields[id]" value="<?php echo $id ?>">
+	<?php endif ?>
+	<?php if ($value['tipo'] == 'Texto'): ?>
+		<div class="form-group">
+			<?php if (in_array(strtolower($value['label']), $campos_autocomplete_usuarios_mismo_equipo) and strpos(strtolower($value['label']), 'fecha') === false): ?>
+				<input type="text" class="form-control autocomplete" required name="fields[<?php echo str_replace("##", "#", $value['campo']) ?>]" placeholder="<?php echo $value['label'] ?>" value="<?php echo isset($_POST['fields'][$value['campo']]) ? $_POST['fields'][$value['campo']] : null ?>">
+			<?php elseif(in_array(strtolower($value['label']), $campos_validar_hora) and strpos(strtolower($value['label']), 'fecha') === false): ?>
+				<input type="text" class="form-control" onBlur="checktime(this)" required name="fields[<?php echo str_replace("##", "#", $value['campo']) ?>]" placeholder="<?php echo $value['label'] ?>" value="<?php echo isset($_POST['fields'][$value['campo']]) ? $_POST['fields'][$value['campo']] : null ?>">
+			<?php elseif(strpos(strtolower($value['label']), 'fecha') !== false): ?>
+				<input type="text" class="form-control datepicker" required name="fields[<?php echo str_replace("##", "#", $value['campo']) ?>]" placeholder="<?php echo $value['label'] ?>" value="<?php echo isset($_POST['fields'][$value['campo']]) ? $_POST['fields'][$value['campo']] : null ?>">				
+			<?php else: ?>
+				<input type="text" class="form-control" required name="fields[<?php echo str_replace("##", "#", $value['campo']) ?>]" placeholder="<?php echo $value['label'] ?>" value="<?php echo isset($_POST['fields'][$value['campo']]) ? $_POST['fields'][$value['campo']] : null ?>">
+			<?php endif ?>
+		</div>
+	<?php elseif($value['tipo'] == 'Simple' or $value['tipo'] == 'Multiple'): ?>
+		
+		<?php if ($value['tipo'] == 'Multiple'): ?>
+			<select required name="fields[<?php echo str_replace("##", "#", $value['campo']) ?>]" class="form-control"  multiple id="">
+		<?php else: ?>
+			<select required name="fields[<?php echo str_replace("##", "#", $value['campo']) ?>]" class="form-control" id="">
+		<?php endif ?>
+			<option value="">Seleccione</option>
+			<?php $valores = explode(",",$value['valores']) ?>
+			<?php for ($i=0; $i < count($valores) ; $i++): ?> 
+				<?php if (isset($_POST['fields'][$value['campo']]) and $valores[$i] == $_POST['fields'][$value['campo']]): ?>
+					<option value="<?php echo $valores[$i] ?>" selected><?php echo $valores[$i] ?></option>
+				<?php else: ?>
+					<option value="<?php echo $valores[$i] ?>" ><?php echo $valores[$i] ?></option>
+				<?php endif ?>		
+	
+			<?php endfor; ?>
+		</select>
+
+	<?php endif; ?>
+<?php endforeach ?>
+<?php $plantillas=Load::model('plantilla')->getPlantillasDeUsuario(Auth::get('id')) ?>
+<?php foreach ($plantillas as $key => $value): ?>
+	<?php echo Form::submit("Generar reporte con: $value->nombre","class='btn btn-default btn_submit' name='adherir' ") ?>
+	<?php echo Form::hidden($value->nombre,null,$value->url) ?>
+<?php endforeach ?>
+<input type="hidden" name="fields[creado]" id="fecha_creado">
+<input type="hidden" name="formulario" value="<?php echo $formulario ?>" >
+<?php  echo Form::close() ?>
+<br><br>
+
+
+<?php echo Tag::js("jquery/jquery-ui.min") ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".btn_submit").click(function(){
+			var f = new Date();
+			hora = f.getFullYear()+"-"+(f.getMonth() +1)+"-"+f.getDate()+" "+ f.getHours()+":"+f.getMinutes()+":"+f.getSeconds();
+			$("#fecha_creado").val(hora);
+		})
+		var usuarios_de_equipo = <?php echo json_encode(Load::model("usuario_equipo")->getUsuarioDeMismoEquipo(Auth::get('id'))) ?>;
+		var array = $.map(usuarios_de_equipo, function(value, index) {
+		    return [value];
+		});
+
+		$( ".autocomplete" ).autocomplete({
+	      source: array,
+	      minLength: 0
+	    }).focus(function() {
+ 			//Use the below line instead of triggering keydown
+        	$(this).autocomplete('search', $(this).val())
+		});
+	
+		
+	})
+ 	function twoDigits(d) {
+    if(0 <= d && d < 10) return "0" + d.toString();
+    if(-10 < d && d < 0) return "-0" + (-1*d).toString();
+    return d.toString();
+}
+
+	function checktime(str) 
+	{ 
+		hora=str.value; 
+	
+		if (hora.length>8) { 
+			alert("Introdujo una cadena mayor a 8 caracteres"); 
+			return; 
+		} 
+		if (hora.length!=8) { 
+			alert("Introducir HH:MM:SS"); 
+			str.focus();
+			str.value="";
+			return; 
+		} 
+	a=hora.charAt(0); //<=2 
+	b=hora.charAt(1); //<4 
+	c=hora.charAt(2); //: 
+	d=hora.charAt(3); //<=5 
+	e=hora.charAt(5); //: 
+	f=hora.charAt(6); //<=5 
+	if ((a==2 && b>3) || (a>2)) { 
+		alert("El valor que introdujo en la Hora no corresponde, introduzca un digito entre 00 y 23"); 
+		return; 
+	} 
+	if (d>5) { 
+		alert("El valor que introdujo en los minutos no corresponde, introduzca un digito entre 00 y 59"); 
+		return; 
+	} 
+	if (f>5) { 
+		alert("El valor que introdujo en los segundos no corresponde"); 
+		return; 
+	} 
+	if (c!=':' || e!=':') { 
+		alert("Introduzca el caracter ':' para separar la hora, los minutos y los segundos"); 
+		return; 
+	} 
+} 
+
+</script> 
+  <style>
+  .ui-autocomplete {
+    max-height: 100px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+  }
+  /* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+  * html .ui-autocomplete {
+    height: 100px;
+  }
+  .ui-datepicker-month option,.ui-datepicker-year option{
+	color:black;
+  }
+  </style>

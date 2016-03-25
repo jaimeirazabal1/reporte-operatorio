@@ -1,0 +1,19 @@
+<?php View::content() ?>
+
+<div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		
+			<?php echo Form::open() ?>
+			<div class="form-group">
+				<label for="">Password</label>
+				<?php echo Form::pass("pass","class='form-control'") ?>
+			</div>
+			<?php echo Form::submit("Cambiar","class='btn btn-default'") ?>
+			<?php echo Form::close() ?>
+			<hr>
+		<a href="javascript:history.back(1)" class='btn btn-danger'>Atras</a>
+		</div>
+
+	<div class="col-md-4"></div>
+</div>

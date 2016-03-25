@@ -1,0 +1,38 @@
+<?php View::content() ?>
+<table class="table">
+	<thead>
+		<th>Nombre del formulario</th>
+		<th>Plantillas Asignadas</th>
+		<th>Accion</th>
+	</thead>
+	<?php foreach ($formularios_disponibles as $key => $value): ?>
+		<tr>
+			<td><?php echo $value->nombre_formulario ?></td>
+			<td>
+				
+				<?php $plantillas = Load::model('plantilla')->find_all_by_sql("SELECT plantilla . *
+																			FROM plantilla
+																			
+																			INNER JOIN formulario_plantilla b ON b.plantilla_id = plantilla.id
+																			WHERE b.formulario_id = '$value->id_formulario'
+																			GROUP BY plantilla.id")
+					/*INNER JOIN formulario_plantilla ON formulario_plantilla.formulario_id = '6'*/
+																			?>
+				
+				<?php $c=count($plantillas) ?>
+				<?php $cuenta = 0 ?>
+				<?php foreach ($plantillas as $key1 => $value1): ?>
+					<?php if ($cuenta==$c-1): ?>
+						<?php echo $value1->nombre ?>
+					<?php else: ?>
+						<?php echo $value1->nombre."," ?>
+					<?php endif ?>
+					<?php $cuenta++ ?>
+				<?php endforeach ?>
+			</td>
+			<td><?php echo Html::link("intervenciones/crear/{$value->id_formulario}","Nuevo Registro") ?></td>
+		</tr>
+	<?php endforeach ?>
+</table>
+<?php echo Html::link("#","Volver","class='btn btn-default'") ?>
+<br><br>

@@ -1,0 +1,100 @@
+<?php View::content() ?>
+<table class="table">
+		<tr>
+			<td style="width:25%">
+				<?php echo Form::open() ?>
+				<?php $forms = Load::model('formulario')->find() ?>
+				<select name="formulario_plantilla[formulario_id]" id="" class="form-control">
+					<option value="">Seleccione Formulario</option>
+					<?php foreach ($forms as $key2 => $value2): ?>
+						
+							<option value="<?php echo $value2->id ?>"><?php echo $value2->nombre ?></option>
+					
+					<?php endforeach ?>
+				</select>
+			</td>
+			<td style="width:25%">
+				<?php $plantillas = Load::model('plantilla')->find() ?>
+				<select name="formulario_plantilla[plantilla_id]" class="form-control" id="">
+					<option value="">Seleccione Plantilla</option>
+					<?php foreach ($plantillas as $key => $value2): ?>
+					
+							<option value="<?php echo $value2->id ?>"><?php echo $value2->nombre ?></option>
+				
+					<?php endforeach ?>
+				</select>
+			</td>
+			<td style="width:25%">
+				<?php $equipos = Load::model('equipo')->find() ?>
+				<select name="formulario_plantilla[equipo_id]" class="form-control" id="">
+					<option value="">Seleccione Equipo</option>
+					<?php foreach ($equipos as $key => $value2): ?>
+						
+							<option value="<?php echo $value2->id ?>"><?php echo $value2->nombres_abreviado ?>-<?php echo $value2->pais ?>(<?php echo $value2->ciudad ?>)</option>
+					
+					<?php endforeach ?>
+				</select>
+			</td>
+			<td>
+				
+			</td>
+			<td>
+				<?php echo Form::submit("Asignar","class='btn btn-success' name='asignar'") ?>
+				<?php echo Form::close() ?>
+			</td>
+		</tr>
+	<?php foreach ($formulario_plantilla as $key => $value): ?>
+		<tr>
+			<td>
+				<?php echo Form::open() ?>
+				<?php echo Form::hidden('id',null,$value->formulario_plantilla_id) ?>
+				<?php $forms = Load::model('formulario')->find() ?>
+				<select name="formulario_plantilla[formulario_id]" id="" class="form-control">
+					<option value="">Seleccione Formulario</option>
+					<?php foreach ($forms as $key2 => $value2): ?>
+						<?php if ($value->formulario_id == $value2->id): ?>
+							<option value="<?php echo $value2->id ?>" selected><?php echo $value2->nombre ?></option>
+						<?php else: ?>
+							<option value="<?php echo $value2->id ?>"><?php echo $value2->nombre ?></option>
+						<?php endif ?>
+					<?php endforeach ?>
+				</select>
+			</td>
+			<td>
+				<?php $plantillas = Load::model('plantilla')->find() ?>
+				<select name="formulario_plantilla[plantilla_id]" class="form-control" id="">
+					<option value="">Seleccione Plantilla</option>
+					<?php foreach ($plantillas as $key => $value2): ?>
+						<?php if ($value->plantilla_id == $value2->id): ?>
+							<option value="<?php echo $value2->id ?>" selected><?php echo $value2->nombre ?></option>
+						<?php else: ?>
+							<option value="<?php echo $value2->id ?>"><?php echo $value2->nombre ?></option>
+						<?php endif ?>
+					<?php endforeach ?>
+				</select>
+			</td>
+			<td>
+				<?php $equipos = Load::model('equipo')->find() ?>
+				<select name="formulario_plantilla[equipo_id]" class="form-control" id="">
+					<option value="">Seleccione Equipo</option>
+					<?php foreach ($equipos as $key => $value2): ?>
+						<?php if ($value->equipo_id == $value2->id): ?>
+							<option value="<?php echo $value2->id ?>" selected><?php echo $value2->nombres_abreviado ?>-<?php echo $value2->pais ?>(<?php echo $value2->ciudad ?>)</option>
+						<?php else: ?>
+							<option value="<?php echo $value2->id ?>"><?php echo $value2->nombres_abreviado ?>-<?php echo $value2->pais ?>(<?php echo $value2->ciudad ?>)</option>
+						<?php endif ?>
+					<?php endforeach ?>
+				</select>
+			</td>
+			<td>
+				<?php echo Html::link("plantilla/eliminar_asignacion/{$value->formulario_plantilla_id}/{$value->equipo_id}","<span class='glyphicon glyphicon-remove'></span>","class='btn btn-danger'") ?>
+			</td>
+			<td>
+				<?php echo Form::submit("Guardar","class='btn btn-success' name='editar'") ?>
+				<?php echo Form::close() ?>
+			</td>
+		</tr>
+	<?php endforeach ?>
+</table>
+<br>
+<?php echo Html::link("plantilla/asignadas","Volver","class='btn btn-default'") ?>

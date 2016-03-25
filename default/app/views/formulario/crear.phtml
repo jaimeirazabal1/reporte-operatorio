@@ -1,0 +1,127 @@
+<?php View::content() ?>
+<hr>
+<?php echo Html::link("formulario/","Lista de Formularios",'class="btn btn-default"') ?>
+<?php echo Html::link('plantilla/asignadas','Planillas Asignadas','class="btn btn-default"') ?>
+<hr>
+<?php echo Form::open() ?>
+<div class="form-group">
+	<label>Nombre de Formulario</label>
+	<input type="text" class="form-control" name="nombre"  required placeholder="Nombre de Formulario">
+</div>
+<div class="row">
+  <div class="col-md-2">
+  	<label>Campo</label>
+  </div>
+  <div class="col-md-2">
+  	<input type="text" name="label" id="label" class="form-control" placeholder="Label" >
+  </div>
+  <div class="col-md-2">
+  	<input type="text" id="campo" placeholder="Variable" class="form-control">
+  </div>
+  <div class="col-md-2">
+  	<select name="" class="form-control" id="tipo">
+  		<option value="">Tipo Campo</option>
+  		<option value="Multiple">Seleccion Multiple</option>
+  		<option value="Simple">Seleccion Simple</option>
+  		<option value="Texto">Texto</option>
+  	</select>
+  </div>
+  <div class="col-md-2">
+  	<input type="text" placeholder="valor1,valor2,valor3" id="valores" class='hide form-control'>
+  </div>
+  <div class="col-md-2">
+  	<button id="agregar" class='btn btn-default'>Agregar</button>
+  </div>
+</div>
+<hr>
+<div class="campos well">
+	<div class='row'>
+		<div class="col-md-2">Label</div>
+		<div class="col-md-2">Campo</div>
+		<div class="col-md-2">Tipo Campo</div>
+		<div class="col-md-2"></div>
+		<div class="col-md-4">Accion</div>
+	</div>
+	<hr>
+</div>
+<?php echo Form::submit("Listo","class='btn btn-success' id='listo'") ?>
+<?php echo Form::close() ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var counter=0;
+		$("#agregar").click(function(e){
+			e.preventDefault();
+			if ($('#label').val() && $('#campo').val()) {	
+				html = '<div class="col-md-2">'+
+							'<input type="text" name="label['+counter+'][]" value="'+$("#label").val()+'" class="form-control" >'+
+						'</div>'+
+						'<div class="col-md-2">'+
+							'<input type="text" name="campo['+counter+'][]" value="'+$("#campo").val()+'" class="form-control" >'+
+						'</div>';
+				if ($("#tipo").val() == 'Simple' || $("#tipo").val() == 'Multiple') {
+					hidden="<input type='hidden' name='valores["+counter+"][]' value='"+$("#valores").val()+"'>";
+					valores=$("#valores").val().split(',');
+					options='<option value="">Seleccione</option>';
+					for (var i = 0; i < valores.length; i++) {
+						options+='<option value="'+valores[i]+'">'+valores[i]+'</option>';
+					};
+					if ($("#tipo").val() == 'Multiple') {
+						html += '<div class="col-md-2">'+
+									'<select class="form-control name="opciones['+counter+'][]" multiple>'+options+'</select>'+
+								'</div>'+
+								'<div class="col-md-2"><input type="text" name="tipo['+counter+'][]" readonly class="form-control" value="'+$("#tipo").val()+'">'+hidden+'</div>'+
+								'<div class="col-md-4">'+
+									'<button class="btn btn-danger btn-xs borrar"><span class="glyphicon glyphicon-minus"></span></button>'+
+								'</div>';
+
+					}else{
+
+						html += '<div class="col-md-2">'+
+									'<select class="form-control name="opciones['+counter+'][]">'+options+'</select>'+
+								'</div>'+
+								'<div class="col-md-2"><input type="text" name="tipo['+counter+'][]" readonly class="form-control" value="'+$("#tipo").val()+'">'+hidden+'</div>'+
+								'<div class="col-md-4">'+
+									'<button class="btn btn-danger btn-xs borrar"><span class="glyphicon glyphicon-minus"></span></button>'+
+								'</div>';
+					}
+				}else{
+					html += '<div class="col-md-2"></div>'+
+							'<div class="col-md-2"><input type="text" name="tipo['+counter+'][]" readonly class="form-control" value="'+$("#tipo").val()+'"></div>'+
+							'<div class="col-md-4">'+
+								'<button class="btn btn-danger btn-xs borrar"><span class="glyphicon glyphicon-minus"></span></button>'+
+							'</div>';
+				}
+				// console.log(html);
+				$('.campos').append("<div class='row'>"+html+"</div>");
+				$('#label').val("");
+				$('#campo').val("");
+				$('#tipo').val('');
+				$('#valores').val('');
+				counter++;
+			}else{
+				alert('No debe haber valores nulos');
+			}
+		});
+		$("body").on('click','.borrar',function(){
+			$(this).parent().parent().remove();
+			counter--;
+		});
+		$('#listo').click(function(){
+			if (!counter) {
+				alert("Debe agregar un campo");
+				return false;
+			};
+		})
+
+
+
+		$("#tipo").change(function(){
+			if ($(this).val() == 'Simple' || $(this).val() == 'Multiple') {
+				$("#valores").removeClass("hide");
+			}else{
+				$("#valores").addClass("hide");
+
+			}
+		})
+	});
+</script>

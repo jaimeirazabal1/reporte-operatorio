@@ -1,0 +1,38 @@
+<?php View::content() ?>
+<hr>
+<?php echo Html::link('formulario/crear',"Volver","class='btn btn-default'") ?>
+<hr>
+<table class="table">
+	<thead>
+		<th>Nombre</th>
+		<th>Campos</th>
+		<th>Acciones</th>
+	</thead>
+	<?php foreach ($formularios as $key => $value): ?>
+		<tr>
+			<td><?php echo $value->nombre ?></td>
+			<td>
+				<pre>
+				<?php 
+					$campos = unserialize($value->campos);
+					echo "<ul>";
+					for ($i=0; $i < count($campos); $i++) { 
+						echo "<li><b>Label: </b>".$campos[$i]['label']."<br>";		
+						echo "<b>Campo: </b>".$campos[$i]['campo']."<br>";		
+						echo "<b>Tipo: </b>".$campos[$i]['tipo']."<br>";
+						if (isset($campos[$i]['valores'])) {
+							echo "<b>Valores: </b>".$campos[$i]['valores']."<br>";
+						}
+						echo "</li>";		
+					}
+					echo "</ul>";
+
+				 ?>
+				</pre>
+			</td>
+			<td>
+				<?php echo Html::link("formulario/eliminar/{$value->id}",'<span class="glyphicon glyphicon-remove"></span>',"class='btn btn-danger'") ?>
+			</td>
+		</tr>
+	<?php endforeach ?>
+</table>

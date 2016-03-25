@@ -1,0 +1,71 @@
+<style type="text/css">
+	.form_inicial{
+		margin-top: 40%;
+		margin-left: 10%;
+		margin-right: 10%;
+	}
+	.form_inicial label{
+		color:white;
+		font-size: 20px;
+	}
+	.texto{
+		margin-top: 40%;
+		color: #D1D1D1;
+		font-size: 20px;
+	}
+	.titulo_princial{
+		color: white;
+		margin-top: 100px;
+		margin-bottom: -200px;
+		margin-left: 200px;
+		font-size: 80px;
+		line-height: 90%;
+		font-weight: bold;
+		font-style: italic;	
+	}
+</style>
+<div class="row">
+	<div class="col-md-6">
+		<div class="form_inicial">
+			<?php View::content() ?>
+			<?php echo Form::open("auth/login") ?>
+				<div class="form-group">
+					<label for="usuario">Usuario:</label>
+					<input type="text" name="usuario" class="form-control" id="usuario" placeholder="">
+				</div>
+				<div class="form-group">
+					<label for="contraseña">Contraseña:</label>
+					<input type="password" name="contrasenia" class="form-control" id="contraseña" placeholder="">
+				</div>
+				<?php echo Form::submit("Iniciar Sesión",'class="btn btn-default"') ?>
+				<!--<button type="submit" class="btn btn-default">Submit</button>-->
+
+				<button  class="btn btn-default">Olvidé mi Contraseña</button>
+				<button  class="btn btn-default">Crear Usuario</button>
+			</form>  	
+		</div>
+	</div>
+	<div class="col-md-6">
+<div class="titulo_princial">
+	<p>Reporte</p>
+	<p>Operatorio</p>
+</div>
+<div class="texto">
+			<p>Lleve sus reportes operatorios a donde quiera que vaya.</p>
+
+			<p>Genere reportes estadísticos de todas sus cirugías y de todo su equipo</p>
+
+				<p>Descubra su record quirúrgico personal y las tendencias de su equipo.</p>
+
+				<p>Ingrese sus reportes operatorios e imprímalos en el mismo formato de su institución.</p>
+
+				<p>Ahorre tiempo dejando de ingresar los mismos datos en diferentes bases de datos.</p>
+			</p>
+</div>
+		</div>
+	</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#usuario,#contraseña").val("")
+	})
+</script>

@@ -1,0 +1,42 @@
+<?php View::content() ?>
+<hr>
+<?php echo Html::link("plantilla/asignadas","Formularios y Plantillas Asignadas","class='btn btn-default'") ?>
+<hr>
+<table class="table">
+	<thead>
+		<th>Nombre de Plantilla</th>
+		<th>Ruta RTF</th>
+		<!--<th>Vista Previa</th>-->
+		<th>Acciones</th>
+	</thead>
+	<?php foreach ($plantillas as $key => $value): ?>
+		<tr>
+			<td><?php echo $value->nombre ?></td>
+			<?php 
+			$parts = explode('.', $value->url);
+			$parts = $parts[0];
+			$parts = explode('/',$parts);
+			$parts = $parts[count($parts)-1];
+			$url = 'http://www.reporteoperatorio.com/plataforma'.$value->url;
+			$nombre_archivo = explode("/",$value->url);
+			$size = count($nombre_archivo);
+
+			 //var_dump($url);
+			 ?>
+			<td>
+			
+			<?php echo $value->url ?> <a href="<?php echo PUBLIC_PATH.$value->url ?>"><span class="glyphicon glyphicon-download"></span></a></td>
+			<!--<td>
+				<iframe src="http://docs.google.com/gview?url=<?php// echo $url ?>&embedded=true" style="width:200px; height:100px;" frameborder="0"></iframe>
+				<?php //echo Html::link("archivos/get_plantilla/".$nombre_archivo[$size-1],"Ver") ?>
+			</td>-->
+			<td>
+				<?php echo Html::link("plantilla/editar/{$value->id}","<span class='glyphicon glyphicon-pencil'></span>","class='btn btn-xs btn-default'") ?>
+				<?php echo Html::link("plantilla/eliminar/{$value->id}","<span class='glyphicon glyphicon-remove'></span>","class='btn btn-xs btn-danger'") ?>
+			</td>
+		</tr>
+	<?php endforeach ?>
+</table>
+<?php echo Html::link("plantilla/subir","Subir plantilla ","class='btn btn-default'") ?>
+<br><br>
+<!-- http://reporteoperatorio.com/public_html/plataforma/files/upload/plantillas/2016_02_17_22_26_05_Plant_HNDM_ver2.docx -->

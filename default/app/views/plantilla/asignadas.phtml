@@ -1,0 +1,40 @@
+<?php View::content() ?>
+<hr>
+<?php echo Html::link("plantilla/","Formularios y Plantillas","class='btn btn-default'") ?>
+<?php echo Html::link("plantilla/asignar","Asignar Plantilla","class='btn btn-default'") ?>
+<hr>
+<table class="table">
+	<thead>
+		<th>Nombre de Formulario</th>
+		<th>Plantillas asignadas</th>
+		<th>Equipo al que se ha asignado</th>
+		<th>Acciones</th>
+	</thead>
+	<?php $nombre='' ?>
+	<?php $form_equipo=array() ?>
+	<?php foreach ($asignaciones as $key => $value): ?>
+		<?php if (!in_array($value->equipo_id.$value->nombre_form,$form_equipo)): ?>
+			<?php $form_equipo[]=$value->equipo_id.$value->nombre_form ?>
+			<tr>
+				<td><?php echo $value->nombre_form ?></td>
+				<td>
+					<?php $var='' ?>
+					<?php $results=Load::model("formulario_plantilla")->gets($value->nombre_form,$value->equipo_id); ?>
+					<?php foreach ($results as $key => $value): ?>
+						<?php $var.= $value->nombre_plant.", " ?>
+					<?php endforeach ?>
+					<?php echo substr($var,0,-1) ?>
+				</td>
+				<td><?php echo $value->nombres_abreviado ?>-<?php echo $value->pais ?>(<?php echo $value->ciudad ?>)</td>
+				<td>
+					<?php echo Html::link("plantilla/editarasignada/{$value->equipo_id}","<span class='glyphicon glyphicon-pencil'></span>","class='btn btn-default'") ?>
+				</td>
+			</tr>
+		<?php endif ?>
+			
+	
+	
+
+	<?php endforeach ?>
+</table>
+<?php echo Html::link("formulario/crear","Crear Formulario ","class='btn btn-default'") ?>

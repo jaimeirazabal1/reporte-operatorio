@@ -1,0 +1,39 @@
+
+<table class="table">
+	<thead>
+		<th>#</th>
+		<th>Usuario</th>
+		<th>Nombres</th>
+		<th>Apellidos</th>
+		<th>Aparicion</th>
+		<th>Institucion</th>
+		<th>Departamento</th>
+		<th>Accion</th>
+	</thead>
+	<?php if (empty($usuarios)): ?>
+		<tr>
+			<td colspan="8" align="center">No se encontraron registros</td>
+		</tr>
+	<?php else: ?>
+	<?php $counter=1 ?>
+		<?php foreach ($usuarios as $key => $value): ?>
+			<tr>
+				<td><?php echo $counter ?></td>
+				<td><?php echo $value->usuario ?> </td>
+				<td><?php echo $value->nombres ?> </td>
+				<td><?php echo $value->apellidos ?> </td>
+				<td><?php echo $value->aparicion ?> </td>
+				<td><?php echo $value->institucion ?> </td>
+				<td><?php echo $value->departamento ?> </td>
+				<td>
+				<?php echo Html::link("usuario/modificar/{$value->id}","Modificar","class='btn btn-default btn-xs'") ?>
+				<?php echo Html::link("usuario/pass/{$value->id}","Modificar Password","class='btn btn-default btn-xs'") ?>
+				 </td>
+			</tr>
+			<?php $counter++ ?>
+		<?php endforeach ?>
+	<?php endif ?>
+</table>
+
+<?php echo Html::link("usuario/crear?rol=".Input::get('rol'),"Agregar {$titulo}","class='btn btn-default'") ?>
+<hr>

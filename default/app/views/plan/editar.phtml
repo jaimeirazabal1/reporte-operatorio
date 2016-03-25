@@ -1,0 +1,14 @@
+<?php View::content() ?>
+<?php echo Form::open() ?>
+<div class="form-group">
+	<?php echo Form::hidden("plan.id") ?>
+	<label for="">Nombre</label>
+	<?php echo Form::text("plan.nombre","class='form-control' required") ?>
+</div>
+<div class="form-group">
+	<label for="">Registros Permitidos</label>
+	<?php echo Form::number("plan.registros_permitidos","class='form-control' required ") ?>
+</div>
+<?php echo Form::submit("Editar Plan","class='btn btn-default'") ?>
+<?php echo Html::link('plan/',"Cancelar","class='btn btn-default'") ?>
+<?php echo Form::close() ?>

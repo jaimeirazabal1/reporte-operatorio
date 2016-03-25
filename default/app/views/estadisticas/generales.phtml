@@ -1,0 +1,124 @@
+<?php View::content() ?>
+<p class="alert alert-info">
+	Reporte Operatorio, es el primer sistema en línea de gestión, administración y creación de reportes operatorios de Centros Quirúrgicos y Salas de Operaciones.
+</p>
+<p class="alert alert-info">Seleccione primero un formulario, y luego establezca un rango de tiempo para generar las estadísticas del formulario seleccionado.</p>
+<?php echo Form::open() ?>
+<div class="form-group">
+	<label for="">Formulario</label>
+	<select name="formulario_id" class="form-control" id="">
+		<?php $formularios = Load::model("formulario")->find() ?>
+		<option value="">Seleccione Formulario</option>
+		<?php foreach ($formularios as $key => $value): ?>
+			<option value="<?php echo $value->id ?>"><?php echo $value->nombre ?></option>
+		<?php endforeach ?>
+	</select>
+</div>
+<div class="row">
+	<div class="col-md-3"><input type="text" placeholder="Desde" name="desde" class="datepicker form-control"></div>
+	<div class="col-md-3"><input type="text" placeholder="Hasta" name="hasta" class="datepicker form-control"></div>
+	<div class="col-md-3"><input type="submit" name="btn_buscar" class="btn btn-success" id="btn_buscar" value="Buscar!"></div>
+	<div class="col-md-3"></div>
+</div>
+<?php echo Form::close() ?>
+<br>
+<?php if (isset($resultado)): ?>
+	<div class="alert alert-success">
+		<b><?php echo count($resultado)." Resultados."  ?></b>
+	</div>
+<?php endif ?>
+<table class="table">
+	<thead>
+		<th>Numero de Intervenciones</th>
+		<td><?php echo $intervenciones ?> Intervenciones</td>
+	</thead>
+	<thead>
+		<th>Record Operatorio</th>
+		<td><?php echo $record_operatorio ?> horas</td>
+	</thead>
+</table>
+<p class="alert alert-info">
+	Estadísticas por participación como Cirujano Principal 
+</p>
+
+<table class="table table-striped">
+	<thead>
+		<th>Cirujano</th>
+		<th>Numero de Intervenciones</th>
+		<th>Record Operatorio</th>
+	</thead>
+	<?php foreach ($intervenciones_agrupadas as $key => $value): ?>
+		<?php $datos = unserialize($value->formulario) ?>
+		<?php 
+			$pos_ini = strpos($datos['cirujano1'],'(');
+			$pos_fin = strpos($datos['cirujano1'],')');
+			$id = substr($datos['cirujano1'],$pos_ini+1,$pos_fin-1);
+			$intervenciones_result = Load::model('intervenciones')->find();
+			$usuario = Load::model("usuario")->find($id);
+			$nombres_apellidos = $usuario->nombres." ".$usuario->apellidos;
+			$suma_de_horas = "00:00:00";
+			$cuenta = 0;
+			foreach ($intervenciones_result as $key2 => $value2) {
+				$datos_ = unserialize($value2->formulario);
+				if (strrpos($datos_['cirujano1'], $nombres_apellidos)) {
+					$cuenta++;
+					$arreglo[] = $datos_['cirujano1'];
+					$suma_de_horas = Util::sumarHoras($suma_de_horas, $datos_['tiempo']);
+				}
+			}
+		 ?>
+		<tr>
+			<td><?php echo $datos['cirujano1'] ?></td>
+			<td><?php echo $cuenta ?></td>
+			<td><?php echo $suma_de_horas ?></td>
+		</tr>
+	<?php endforeach ?>
+</table>
+
+<p class="alert alert-info">
+	Estadísticas por participación de los usuarios del Equipo 
+</p>
+
+<table class="table table-striped">
+	<thead>
+		<th>Usuario </th>
+		<th>Número de Intervenciones</th>
+		<th>Record</th>
+	</thead>
+	<?php foreach ($intervenciones_agrupadas as $key => $value): ?>
+		<?php $datos = unserialize($value->1) ?>
+		<?php 
+			$pos_ini = strpos($datos['cirujano1'],'(');
+			$pos_fin = strpos($datos['cirujano1'],')');
+			$id = substr($datos['cirujano1'],$pos_ini+1,$pos_fin-1);
+			$intervenciones_result = Load::model('intervenciones')->find();
+			$usuario = Load::model("usuario")->find($id);
+			$nombres_apellidos = $usuario->nombres." ".$usuario->apellidos;
+			$suma_de_horas = "00:00:00";
+			$cuenta = 0;
+			foreach ($intervenciones_result as $key2 => $value2) {
+				$datos_ = unserialize($value2->formulario);
+				if (strrpos($datos_['cirujano1'], $nombres_apellidos)) {
+					$cuenta++;
+					$arreglo[] = $datos_['cirujano1'];
+					$suma_de_horas = Util::sumarHoras($suma_de_horas, $datos_['tiempo']);
+				}
+				if (strrpos($datos_['asistente1'], $nombres_apellidos)) {
+					$cuenta++;
+					$arreglo[] = $datos_['asistente1'];
+					$suma_de_horas = Util::sumarHoras($suma_de_horas, $datos_['tiempo']);
+				}
+				if (strrpos($datos_['residente1'], $nombres_apellidos)) {
+					$cuenta++;
+					$arreglo[] = $datos_['residente1'];
+					$suma_de_horas = Util::sumarHoras($suma_de_horas, $datos_['tiempo']);
+				}
+			}
+		 ?>
+		<tr>
+			<td><?php echo $datos['cirujano1'] ?></td>
+			<td><?php echo $cuenta ?></td>
+			<td><?php echo $suma_de_horas ?></td>
+		</tr>		
+	<?php endforeach ?>
+</table>

@@ -1,0 +1,217 @@
+  <?php echo Html::link("equipo/","<< Volver","class='btn btn-default'") ?>
+  <hr>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Administrador de Equipo</h3>
+		    <?php View::content() ?>
+  </div>
+  <div class="panel-body">
+	<div class="row">
+	  <div class="col-md-6">
+	  	<div class="panel panel-default">
+		  <div class="panel-heading">Nuevo Administrador del equipo</div>
+		  <div class="panel-body">
+				<?php echo Form::open('usuario/crearadministrador?rol=3') ?>
+				<h1>Informacion General</h1>
+				<div class="form-group">
+					<label>Usuario:</label>
+					<?php $param=Router::get('parameters') ?>
+					<?php $url = Router::get("controller")."/".Router::get('action').'/'.$param[0] ?>
+					<?php echo Form::hidden("url_", NULL ,$url) ?>
+					<?php echo Form::hidden('equipo_id', NULL, $param[0]) ?>
+					<?php echo Form::text("usuario.usuario","class='form-control required'") ?>
+				</div>
+				<div class="form-group">
+					<label>Contraseña</label>
+					<?php echo Form::pass("usuario.contrasenia","class='form-control required'",'') ?>
+					<label>Repetir Contraseña</label>
+					<?php echo Form::pass("usuario.re_contrasenia","class='form-control required'",'') ?>
+				</div>
+				<div class="form-group">
+					<label>Nombres</label>
+					<?php echo Form::text("usuario.nombres","class='form-control' placeholder='Nombres...'") ?>
+				</div>
+				<div class="form-group"> 
+					<label>Apellidos</label>
+					<?php echo Form::text("usuario.apellidos","class='form-control' required placeholder='Apellidos...'") ?>
+				</div>
+				<div class="form-group">
+					<label>Aparición en los Reportes:</label>
+					<?php echo Form::text("usuario.aparicion","class='form-control' placeholder='Aparición en los Reportes...'") ?>
+				</div>
+				<h1>Datos Personales</h1>
+				<div class="form-group">
+					<label>Genero</label>
+					<div class="check">
+						<label>
+						<?php echo Form::radio("usuario.genero",'F',null,'1') ?> Femenino
+						</label>
+						<label>
+						<?php echo Form::radio("usuario.genero",'M',null) ?> Masculino
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label>Fecha de Nacimiento</label>
+					<?php echo Form::text("usuario.nacimiento","class='form-control datepicker' placeholder='Nacimiento...'") ?>
+				</div>
+				<div class="form-group">
+					<label>Correo</label>
+					<?php echo Form::text("usuario.email","class='form-control' placeholder='Correo...'") ?>
+				</div>
+				<div class="form-group">
+					<label>Telefono</label>
+					<?php echo Form::text("usuario.telefono","class='form-control' placeholder='Telefono...'") ?>
+				</div>
+				<div class="form-group">
+					<label>Celular</label>
+					<?php echo Form::text("usuario.celular","class='form-control' placeholder='Celular...'") ?>
+				</div>
+				<div class="form-group">
+					<label>Pais</label>
+				      <select name="usuario[pais]" id="" class="form-control">
+				      	<?php foreach ($countries as $key => $value): ?>
+				      		<option value="<?php echo $value ?>"><?php echo $value ?></option>
+				      	<?php endforeach ?>
+				      </select>
+				</div>
+				<div class="form-group">
+					<label>Ciudad</label>
+					<?php echo Form::text("usuario.ciudad","class='form-control' placeholder='Ciudad...'") ?>
+				</div>
+				<div class="form-group">
+					<label>DNI</label>
+					<?php echo Form::text("usuario.dni","class='form-control' placeholder='DNI...'") ?>
+				</div>
+				<div class="form-group">
+					<label>Colegiatura / Licencia</label>
+					<?php echo Form::text("usuario.colegiatura","class='form-control' placeholder='Colegiatura...'") ?>
+				</div>
+				<?php if (Input::hasget('rol')): ?>
+					<?php echo Form::hidden("usuario.role",null,Input::get('rol')) ?>
+				<?php else: ?>
+					<?php echo Form::hidden("usuario.role",null,7) ?>
+				<?php endif ?>
+
+				<?php echo Form::submit("Crear","class='btn btn-default'") ?>
+				<?php echo Html::link("equipo/crear","Cancelar",'class="btn btn-default"') ?>
+				<?php echo Form::close() ?>
+				<br>
+				<br>
+				<link rel="stylesheet" href="<?php echo PUBLIC_PATH ?>css/jquery-ui.css">
+
+				<style type="text/css">
+					.ui-datepicker-month,.ui-datepicker-year{
+						color: black;
+					}
+				</style>
+		  </div>
+		</div>
+	  </div>
+	  <div class="col-md-6">
+	  	<div class="panel panel-default">
+		  <div class="panel-heading">Usuarios Del Equipo</div>
+		  <div class="panel-body" id="usuario-equipo">
+		    <?php if ($usuarios_equipo): ?>
+		    <p>
+		    	Selecciona un usuario del equipo para hacerlo nuevo administrador del equipo
+		    </p>
+		    <ul class="list-group">
+		    	
+
+		    	<?php echo Form::open('usuario_equipo/cambiar_admin/'.$param[0],"post") ?>
+		    <?php foreach ($usuarios_equipo as $key => $value): ?>
+		    <li class="list-group-item">
+		    	<div class="check">
+		    		<label>
+		    			<input type="radio" class='cambio_admin'  name="usuario_id" value="<?php echo $value->usuario_id ?>">&nbsp;&nbsp;<?php echo $value->nombres.' '.$value->apellidos. ' <br> Aparicion: '.$value->aparicion. ' <br> Email: '.$value->email ?>
+		    		</label>
+		    	</div>
+		    </li>
+		    <?php endforeach ?>
+			</ul>
+		    <?php else: ?>
+		    <center>
+		    	<p>El Equipo no posee usuarios registrados!!</p>
+		    </center>
+		    <?php endif ?>
+		   	<button id="btn_agregar_usuarios_grupo" onclick='return false;' class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Agregar Usuarios</button>
+		   	<?php echo Form::submit("Cambiar Administrador","class='btn btn-success' id='btn-cambiar-admin' " ) ?>
+		    	<?php echo Form::close() ?>
+
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+</div>
+<!-- Large modal -->
+
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+		<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Agregar Usuarios al equipo</h4>
+      </div>
+      <div class="modal-body">
+		<?php echo $html ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btn_guardar_cambios">Guardar Cambios</button>
+      </div>  		
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('body').on("click",'#btn_guardar_cambios',function(){
+			var datos = 0;
+			var url = "";
+			var id_equipo="";
+			$('.usuarios_agregando').each(function(){
+				if ($(this).is(":checked") && datos === 0) {
+					url +='?valor'+datos+'='+$(this).val();
+					id_equipo = $(this).attr('id');
+					datos++;
+				}
+				if ($(this).is(":checked") && datos !== 0) {
+					url +='&valor'+datos+'='+$(this).val();
+					datos++;
+				}
+			})
+			if (id_equipo) {			
+				$.ajax({
+					url:'../../usuario_equipo/get_usuarios_not_equipo/'+id_equipo+url,
+					async:false,
+					dataType:'json',
+					success:function(r){
+						console.log(r);
+						if (r.response) {
+							location.reload(1);
+						}else{
+							alert(r.errores);
+						}
+					}
+				})
+			};
+		});
+
+		$("#btn-cambiar-admin").click(function(){
+			var checked=0;
+			$('.cambio_admin').each(function(){
+				if ($(this).is(":checked")) {
+					checked++;
+				};
+				if (!checked) {
+					alert("Debe escoger un usuario del equipo!");
+					return false;
+				};
+			});
+			if (checked && !confirm('esta seguro de cambiar el administrador?')) {
+				return false;
+			};
+		});
+	})
+</script>

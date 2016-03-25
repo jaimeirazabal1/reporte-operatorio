@@ -1,0 +1,15 @@
+<?php View::content() ?>
+<table class="table">
+	<thead>
+		<th>Equipo</th>
+		<th>Plan</th>
+		<th>Registros permitidos</th>
+	</thead>
+	<?php foreach ($planes_by_equipo as $key => $value): ?>
+		<tr>
+			<td><?php echo $value->nombres_abreviado." - ".$value->institucion." - ".$value->departamento ?></td>
+			<td><?php echo $value->nombre_plan ?></td>
+			<td><?php echo $value->registros_permitidos ?></td>
+		</tr>
+	<?php endforeach ?>
+</table>

@@ -1,0 +1,27 @@
+<?php View::content() ?>
+<table class="table">
+	<thead>
+		<th>#</th>
+		<th>Nombre</th>
+		<th>Registros Permitidos</th>
+		<th>Acciones</th>
+	</thead>
+	<?php if (empty($planes)): ?>
+		<tr>
+			<td colspan='3' align="center">No Hay Registros encontrados!</td>
+		</tr>
+	<?php endif ?>
+	<?php $counter=1 ?>
+	<?php foreach ($planes as $key => $value): ?>
+		<tr>
+			<td><?php echo $counter ?></td>
+			<td><?php echo $value->nombre ?></td>
+			<td><?php echo $value->registros_permitidos ?></td>
+			<td><?php echo Html::link("plan/editar/{$value->id}","<span class='glyphicon glyphicon-pencil'></span>","class='btn btn-default btn-xs'") ?>
+				<?php echo Js::link("plan/eliminar/{$value->id}","<span class='glyphicon glyphicon-remove'></span>",'Estas Seguro?',"btn btn-danger btn-xs") ?> 
+			 </td>
+		</tr>
+		<?php $counter++ ?>
+	<?php endforeach ?>
+</table>
+<?php echo Html::link('plan/crear',"Agregar Plan",'class="btn btn-default"') ?>

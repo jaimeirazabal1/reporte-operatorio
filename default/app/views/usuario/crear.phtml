@@ -1,0 +1,36 @@
+<?php View::content() ?>
+<?php echo Form::open() ?>
+<div class="form-group">
+	<label>Usuario:</label>
+	<?php echo Form::text("usuario.usuario","class='form-control'") ?>
+</div>
+<div class="form-group">
+	<label>Nombres</label>
+	<?php echo Form::text("usuario.nombres","class='form-control' placeholder='Nombres...'") ?>
+</div>
+<div class="form-group">
+	<label>Apellidos</label>
+	<?php echo Form::text("usuario.apellidos","class='form-control' placeholder='Apellidos...'") ?>
+</div>
+<div class="form-group">
+	<label>Aparicion</label>
+	<?php echo Form::text("usuario.aparicion","class='form-control' placeholder='Aparicion...'") ?>
+</div>
+<div class="form-group">
+	<label>Institucion</label>
+	<?php echo Form::text("usuario.institucion","class='form-control' placeholder='Institucion...'") ?>
+</div>
+<?php if (Input::hasget('rol')): ?>
+	<?php echo Form::hidden("usuario.role",null,Input::get('rol')) ?>
+<?php else: ?>
+	<?php echo Form::hidden("usuario.role",null,7) ?>
+<?php endif ?>
+<div class="form-group">
+	<label>Departamento</label>
+	<?php echo Form::text("usuario.departamento","class='form-control' placeholder='Departamento...'") ?>
+</div>
+<?php echo Form::hidden("usuario.contrasenia","class='form-control'",'Prueba') ?>
+<?php echo Form::submit("Crear","class='btn btn-default'") ?>
+<?php echo Form::close() ?>
+<br>
+<br>

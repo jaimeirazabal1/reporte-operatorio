@@ -1,0 +1,172 @@
+<?php View::content() ?>
+<form class="form-horizontal">
+<h3>Información General</h3>
+<br>
+  <div class="form-group">
+    <label for="usuario" class="col-sm-2 control-label">Usuario</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" disabled id="usuario" placeholder="Usuario">
+    </div>
+    <div class="col-sm-5">
+      <p>
+      	(Establecido por el administrador)
+      </p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="nombres" class="col-sm-2 control-label">Nombres</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="nombres" placeholder="Nombres">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="apellidos" class="col-sm-2 control-label">Apellidos</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="apellidos" placeholder="Apellidos">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="aparacion" class="col-sm-2 control-label">Aparición</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" disabled id="aparacion" placeholder="Aparición">
+    </div>
+    <div class="col-sm-5">
+      <p>
+      	(Establecido por el administrador)
+      </p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="institucion" class="col-sm-2 control-label">Institución</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" disabled id="institucion" placeholder="Institución">
+    </div>
+    <div class="col-sm-3">
+      <p>
+      	(Establecido por el administrador)
+      </p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="departamento" class="col-sm-2 control-label">Departamento</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" disabled id="departamento" placeholder="Departamento">
+    </div>
+    <div class="col-sm-3">
+      <p>
+      	(Establecido por el administrador)
+      </p>
+    </div>
+  </div>
+<h3>Datos Personales</h3>
+<br>  
+  <div class="form-group">
+    <label for="email" class="col-sm-2 control-label">E-mail</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control"  id="email" placeholder="E-mail">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="telefono" class="col-sm-2 control-label">Teléfono</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control"  id="telefono" placeholder="Teléfono">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="celular" class="col-sm-2 control-label">Celular</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control"  id="celular" placeholder="Celular">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="genero" class="col-sm-2 control-label">Género</label>
+    <div class="col-sm-5">
+      <div class="radio">
+        <label>
+          <input type="radio" checked name="sexo"> Masculino
+        </label>
+        <label>
+          <input type="radio" name="sexo"> Femenino
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="nacimiento" class="col-sm-2 control-label">Nacimiento</label>
+    <div class="col-sm-1">
+      <select name="" class="form-control" id="">
+        <?php for($i=1;$i<=31;$i++): ?>
+          <option value="<?php echo $i ?>"><?php echo $i ?></option>
+        <?php endfor; ?>
+      </select>
+    </div>
+    <div class="col-sm-2">
+      <?php $meses = array('enero','febrero','marzo','abril','mayo','junio','julio', 'agosto','septiembre','octubre','noviembre','diciembre'); ?>
+      <select name="" id="" class="form-control">
+      <?php foreach ($meses as $key => $value): ?>
+        <option value="<?php echo $value ?>"><?php echo $value ?></option>
+      <?php endforeach ?>
+      </select>
+    </div>
+    <div class="col-sm-1">
+      <input type="text" class="form-control" maxlength="4" id="ano" placeholder="Año">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="pais" class="col-sm-2 control-label">Pais</label>
+    <div class="col-sm-5">
+      <select name="" id="" class="form-control">
+      	<?php foreach ($countries as $key => $value): ?>
+      		<option value="<?php echo $value ?>"><?php echo $value ?></option>
+      	<?php endforeach ?>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="ciudad" class="col-sm-2 control-label">Ciudad</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control"  id="ciudad" placeholder="Ciudad">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="dni" class="col-sm-2 control-label">DNI</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control"  id="dni" placeholder="DNI">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="colegiatura" class="col-sm-2 control-label">Colegiatura / Licencia</label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control"  id="colegiatura" placeholder="Colegiatura / Licencia">
+    </div>
+  </div>
+<h3>Modificar Contraseña</h3>
+<br>
+<p>Si desea modificar su contraseña, complete los tres campos:</p>
+  <div class="form-group">
+    <label for="contraseña_anterior" class="col-sm-2 control-label">Contraseña anterior</label>
+    <div class="col-sm-5">
+      <input type="password" class="form-control"  id="contraseña_anterior" placeholder="Contraseña anterior">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="nueva_contraseña" class="col-sm-2 control-label">Nueva contraseña</label>
+    <div class="col-sm-5">
+      <input type="password" class="form-control"  id="nueva_contraseña" placeholder="Nueva contraseña">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="repita_contraseña" class="col-sm-2 control-label">Repita contraseña</label>
+    <div class="col-sm-5">
+      <input type="password" class="form-control"  id="repita_contraseña" placeholder="Repita contraseña">
+    </div>
+  </div>
+  <br>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-6">
+      <button type="submit" class="btn btn-default">Guardar Cambios</button>
+      <button type="submit" class="btn btn-default">Cancelar</button>
+    </div>
+  </div>
+</form>
+<br>

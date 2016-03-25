@@ -1,0 +1,42 @@
+<?php View::content() ?>
+<hr>
+<?php echo Html::link("plantilla/asignadas","Volver","class='btn btn-default'") ?>
+<hr>
+<?php echo Form::open() ?>
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group">
+			<label for="">Formulario</label>
+			<select name="formulario_id" class="form-control" id="">
+				<option value="">Seleccione Formulario</option>
+				<?php foreach ($formularios as $key => $value): ?>
+					<option value="<?php echo $value->id ?>"><?php echo $value->nombre ?></option>
+				<?php endforeach ?>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group">
+			<label for="">Plantillas</label>
+			<select name="plantilla_id" class="form-control" id="">
+				<option value="">Seleccione la Plantilla</option>
+				<?php foreach ($plantillas as $key => $value): ?>
+					<option value="<?php echo $value->id ?>"><?php echo $value->nombre ?></option>
+				<?php endforeach ?>
+			</select>
+		</div>	
+	</div>
+	<div class="col-md-4">
+		<div class="form-group">
+			<label for="">Equipo</label>
+			<select name="equipo_id" class="form-control" id="">
+				<option value="">Seleccione el Equipo</option>
+				<?php foreach ($equipos as $key => $value): ?>
+					<option value="<?php echo $value->id ?>"><?php echo $value->nombres_abreviado ?>-<?php echo $value->pais ?>(<?php echo $value->ciudad ?>)</option>
+				<?php endforeach ?>
+			</select>
+		</div>	
+	</div>
+</div>
+<?php echo Form::submit("Guardar","class='btn btn-default'") ?>
+<?php echo Form::close() ?>

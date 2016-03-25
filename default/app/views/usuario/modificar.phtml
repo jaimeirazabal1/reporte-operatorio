@@ -1,0 +1,95 @@
+<?php View::content() ?>
+<?php echo Form::open() ?>
+<?php echo Form::hidden("usuario.id") ?>
+<div class="form-group">
+	<label for="">Usuario</label>
+	<?php echo Form::text('usuario.usuario','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Nombres</label>
+	<?php echo Form::text('usuario.nombres','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Apellidos</label>
+	<?php echo Form::text('usuario.Apellidos','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Institucion</label>
+	<?php echo Form::text('usuario.institucion','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Aparacion</label>
+	<?php echo Form::text('usuario.Aparicion','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Departamento</label>
+	<?php echo Form::text('usuario.departamento','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Email</label>
+	<?php echo Form::text('usuario.email','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Telefono</label>
+	<?php echo Form::text('usuario.telefono','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Celular</label>
+	<?php echo Form::text('usuario.celular','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Genero</label>
+	<p>M:Masculino, F:Femenino</p>
+	<?php echo Form::text('usuario.genero','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Nacimiento</label>
+	<?php echo Form::text('usuario.nacimiento','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Ciudad</label>
+	<?php echo Form::text('usuario.ciudad','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">DNI</label>
+	<?php echo Form::text('usuario.dni','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Colegiatura</label>
+	<?php echo Form::text('usuario.colegiatura','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Creado</label>
+	<?php echo Form::text('usuario.creado','class="form-control"') ?>
+</div>
+<div class="form-group">
+	<label for="">Rol</label>
+	<select name="usuario[rol]" class="form-control" id="">
+		<?php foreach ($roles as $key => $value): ?>
+			<?php if ($usuario->rol == $key): ?>
+			<option value="<?php echo $key ?>" selected><?php echo $value ?></option>
+
+			<?php else: ?>
+			<option value="<?php echo $key ?>"><?php echo $value ?></option>
+			<?php endif ?>
+		<?php endforeach ?>
+	</select>
+</div>
+<div class="form-group">
+	<label for="">Activo</label>
+	<select class="form-control" name="usuario[activo]" id="">
+		<?php if ($usuario->activo): ?>
+			
+		<option value="1" selected>Activo</option>
+		<option value="0">Desactivado</option>
+	<?php else: ?>
+				<option value="1">Activo</option>
+		<option value="0" selected>Desactivado</option>
+		<?php endif ?>
+	</select>
+</div>
+<?php echo Form::hidden("usuario.contrasenia") ?>
+<?php echo Form::submit("Editar","class='btn btn-default'") ?>
+<?php echo Html::link("usuario/listar","Lista de Usuarios","class='btn btn-default'") ?>
+<hr>
+<?php echo Form::close() ?>

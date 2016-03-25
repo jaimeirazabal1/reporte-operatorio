@@ -1,0 +1,45 @@
+<table class="table">
+	<thead>
+		<th>#</th>
+		<th>Usuario</th>
+		<th>Nombres</th>
+		<th>Apellidos</th>
+		<th>Correo</th>
+		<th>Equipos Creados</th>
+		<th>Accion</th>
+	</thead>
+	<?php if (empty($usuarios)): ?>
+		<tr>
+			<td colspan="8" align="center">No se encontraron registros</td>
+		</tr>
+	<?php else: ?>
+	<?php $counter = 1 ?>
+	<?php $administrador_general = Load::model("usuario")->find("conditions: rol='1' and activo='1'") ?>
+	<?php foreach ($administrador_general as $key => $value): ?>
+		<tr>
+			<td> - </td>
+			<td><?php echo $value->usuario ?></td>
+			<td><?php echo $value->nombres ?></td>
+			<td><?php echo $value->apellidos ?></td>
+			<td> - </td>
+			<td> Un Numero por ahora</td>
+			<td> - </td>
+		</tr>
+	<?php endforeach ?>
+		<?php foreach ($usuarios as $key => $value): ?>
+			<tr>
+				<td><?php echo $counter ?></td>
+				<td><?php echo $value->usuario ?> </td>
+				<td><?php echo $value->nombres ?> </td>
+				<td><?php echo $value->apellidos ?> </td>
+				<td><?php echo $value->email ?> </td>
+				<td><?php echo 'por ahora no' ?></td>
+				<td><?php echo Html::link("usuario/editareditores/{$value->id}","<span class='glyphicon glyphicon-pencil'></span>","class='btn btn-default btn-xs'") ?> 
+					<?php echo Js::link("usuario/eliminareditor/{$value->id}","<span class='glyphicon glyphicon-remove'></span>",'Estas Seguro?',"btn btn-danger btn-xs") ?> 
+				</td>
+			</tr>
+			<?php $counter++ ?>
+		<?php endforeach ?>
+	<?php endif ?>
+</table>
+<?php echo Html::link("usuario/creareditores?rol=".Input::get('rol'),"Agregar {$titulo}","class='btn btn-default'") ?>

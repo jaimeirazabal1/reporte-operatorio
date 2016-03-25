@@ -1,0 +1,36 @@
+<?php View::content() ?>
+<?php echo Form::open('usuario/creareditores?rol=2') ?>
+<div class="form-group">
+	<label>Usuario:</label>
+	<?php echo Form::text("usuario.usuario","class='form-control'") ?>
+</div>
+<div class="form-group">
+	<label>Nombres</label>
+	<?php echo Form::text("usuario.nombres","class='form-control' placeholder='Nombres...'") ?>
+</div>
+<div class="form-group">
+	<label>Apellidos</label>
+	<?php echo Form::text("usuario.apellidos","class='form-control' placeholder='Apellidos...'") ?>
+</div>
+<div class="form-group">
+	<label>Correo</label>
+	<?php echo Form::text("usuario.email","class='form-control' placeholder='Correo...'") ?>
+</div>
+
+<?php if (Input::hasget('rol')): ?>
+	<?php echo Form::hidden("usuario.role",null,Input::get('rol')) ?>
+<?php else: ?>
+	<?php echo Form::hidden("usuario.role",null,7) ?>
+<?php endif ?>
+
+<div class="form-group">
+	<label>Contraseña</label>
+	<?php echo Form::pass("usuario.contrasenia","class='form-control'",'') ?>
+	<label>Repetir Contraseña</label>
+	<?php echo Form::pass("usuario.re_contrasenia","class='form-control'",'') ?>
+</div>
+<?php echo Form::submit("Crear","class='btn btn-default'") ?>
+<?php echo Html::link("usuario/listareditores?rol=2","Cancelar",'class="btn btn-default"') ?>
+<?php echo Form::close() ?>
+<br>
+<br>

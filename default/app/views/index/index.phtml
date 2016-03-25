@@ -1,0 +1,134 @@
+<?php View::content() ?>
+<style type="text/css">
+	#capa_bienvenida{
+		position: relative;
+		background-color: #21405f;
+		width: 100%;
+		height:200px;
+		border-radius: 5px;
+	}
+	#capa_bienvenida #titulo{
+		padding-top:5px;
+		position: relative;
+		margin-left:20px;
+	}
+	#capa_bienvenida #titulo h3{
+		position: relative;
+		margin-top: 10px;
+		color:white;
+	}
+	#capa_bienvenida #titulo h4{
+		color: white;
+	}
+	.estadisticas{
+		border-radius: 2px;
+		margin-top:20px;
+		text-align: center;
+		height:50px;
+		color:white;
+		font-size: 20px;
+		line-height: 50px;
+
+	}
+	.estadisticas_equipo{
+		background-color: #6d6e70;
+	}
+	.estadisticas_personales{
+		background-color: #404041;
+	}
+	.capas_numeros{
+		margin-top:20px;
+		margin-bottom:20px;
+	}
+	.numeros{
+		position: relative;
+		padding:15px;
+		height:200px;
+		margin-bottom:20px;
+		border-radius: 2px;
+	}
+	.numeros .titulo{
+		text-align: center;
+		color:white;
+		font-size: 15px;
+	}
+	.intervenciones{
+		background-color: #569341;
+	}
+	.record{
+		background-color: #69bd45;
+	}
+	.intervenciones2{
+		background-color: #1c5787;
+	}
+	.record2{
+		background-color: #467bac;
+	}
+	.numeros .numerillos{
+		position: relative;
+		margin-top: 50px;
+		font-size: 40px;
+		color: white;
+		bottom: 10px;
+		text-align: center;
+	}
+</style>
+<div id="capa_bienvenida">
+	<div id="titulo">
+		<h3>Bienvenido (a) <?php echo ucfirst(Auth::get('nombres'))." ".ucfirst(Auth::get('apellidos')) ?></h3>
+		<h4>
+			<?php foreach ($grupos as $key => $value): ?>
+				<?php echo $value->nombres_abreviado ?> / <?php echo $value->institucion ?> <br>
+			<?php endforeach ?>
+		</h4>
+	</div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+  	<div class="estadisticas estadisticas_equipo">
+		<span>ESTADISTICAS DEL EQUIPO</span>
+  	</div>
+  </div>
+  <div class="col-md-6">
+  	<div class="estadisticas estadisticas_personales">
+		<span>ESTADISTICAS PERSONALES</span>
+  	</div>  	
+  </div>
+</div>
+<div class="row capas_numeros">
+  <div class="col-md-3">
+  	<div class="numeros intervenciones">
+		<div class="titulo">
+			NÚMERO DE INTERVENCIONES
+		</div>
+		<div class="numerillos"><?php echo $intervenciones_por_equipo[0] ?></div>
+  	</div>
+  </div>
+  <div class="col-md-3">
+  	<div class="numeros record">
+		<div class="titulo">
+			RECORD
+		</div>
+		<div class="numerillos"><?php echo $intervenciones_por_equipo[1] ?></div>
+		
+  	</div>
+  </div>
+  <div class="col-md-3">
+  	<div class="numeros intervenciones2">
+		<div class="titulo">
+			NÚMERO DE INTERVENCIONES
+		</div>
+		<div class="numerillos"><?php echo $intervenciones_personales[0] ?></div>
+
+  	</div>
+  </div>
+  <div class="col-md-3">
+  	<div class="numeros record2">
+		<div class="titulo">
+			RECORD
+		</div>
+		<div class="numerillos"><?php echo $intervenciones_personales[1] ?></div>
+
+  	</div>
+  </div>
+</div>

@@ -1,0 +1,158 @@
+<?php $parametro =Router::get('parameters') ?>
+<?php echo Html::link('equipo/estadistica/'.$parametro[0],'Estadisticas',"class='btn btn-default'") ?>
+<hr>
+<?php View::content(); ?>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Datos del equipo</h3>
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+	  <li class="list-group-item">
+	    <span class="badge">Estado del equipo</span>
+	    <?php if ($informe_equipo[0]->pausa): ?>
+	    	Equipo en Pausa
+	    <?php else: ?>
+			Equipo en Play
+	    <?php endif ?>
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">Nombre Abreviado</span>
+	    <?php echo $informe_equipo[0]->nombres_abreviado ?>
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">Institucion</span>
+	    <?php echo $informe_equipo[0]->institucion ?>
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">Departamento</span>
+	    <?php echo $informe_equipo[0]->departamento ?>
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">Especialidades</span>
+	    <?php echo str_replace(',', '<br> ',$informe_equipo[0]->especialidades) ?>
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">Pais</span>
+	    <?php echo $informe_equipo[0]->pais ?>
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">Ciudad</span>
+	    <?php echo $informe_equipo[0]->ciudad ?>
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">Plan</span>
+	    <?php echo $informe_equipo[0]->plan_nombre ?>
+	  </li>
+	  <li class="list-group-item">
+	    <span class="badge">Administrador</span>
+	    <?php echo $informe_equipo[0]->nombres.' '.$informe_equipo[0]->apellidos.' ('.$informe_equipo[0]->celular.') '; ?>
+	  </li>
+	</ul>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Estadisticas</h3>
+  </div>
+  <div class="panel-body">
+  <?php 
+/*
+	$this->roles = array("1"=>"Administrador General",
+    						 "2"=>"Editores",
+    						 "3"=>"Administradores",
+    						 "4"=>"Usuarios Consultores y Registradores",
+    						 "5"=>"Usuarios Consultores",
+    						 "6"=>"Usuarios Registradore
+*/
+   ?>
+  	<b>Número de Usuarios por rango:</b>
+
+  	<p>Usuario “Consultor y Registrador”: 
+  		<?php $cr=0 ?>
+		<?php foreach ($usuarios_de_equipo as $key => $value): ?>
+			<?php if ($value->rol==4): ?>
+				<?php $cr++ ?>
+			<?php endif ?>
+		<?php endforeach ?>
+		<u><?php echo $cr ?></u>
+  	</p>
+
+ 	<p>Usuario “Consultor”: 
+  		<?php $c=0 ?>
+		<?php foreach ($usuarios_de_equipo as $key => $value): ?>
+			<?php if ($value->rol==5): ?>
+				<?php $c++ ?>
+			<?php endif ?>
+		<?php endforeach ?>
+		<u><?php echo $c ?></u>
+ 	</p>
+
+	<p> Usuario “Registrador”: 
+  		<?php $r=0 ?>
+		<?php foreach ($usuarios_de_equipo as $key => $value): ?>
+			<?php if ($value->rol==6): ?>
+				<?php $r++ ?>
+			<?php endif ?>
+		<?php endforeach ?>
+		<u><?php echo $r ?></u>
+	</p>
+
+	<p> Usuario “Sin privilegios”: 
+  		<?php $sp=0 ?>
+		<?php foreach ($usuarios_de_equipo as $key => $value): ?>
+			<?php if ($value->rol==7): ?>
+				<?php $sp++ ?>
+			<?php endif ?>
+		<?php endforeach ?>
+		<u><?php echo $sp ?></u>
+	</p>
+
+	<p> Total: <u><?php echo $cr+$c+$r+$sp ?></u></p>
+	<hr>
+	<b>Lista de usuarios del Equipo:</b>
+	<table class="table">
+		<thead>
+			<th>Nombre de Usuario</th>
+			<th>Nombre</th>
+			<th>Rango</th>
+		</thead>
+		<?php foreach ($usuarios_de_equipo as $key => $value): ?>
+			<tr>
+				<td><?php echo $value->usuario ?></td>
+				<td><?php echo $value->nombres." ".$value->apellidos ?></td>
+				<td><?php echo $roles[$value->rol] ?></td>
+			</tr>
+		<?php endforeach ?>
+	</table>
+	<hr>
+	<b>Plan y consumo:</b>
+	<p>Planes contratados: 
+		<?php $acumulado_registros_permitidos=0; ?>
+		<ul>
+		<?php foreach ($planes as $key => $value): ?>
+			<ol>- <?php echo $value->nombre ?>(<?php echo $value->registros_permitidos ?>)</ol>
+			<?php $acumulado_registros_permitidos = $acumulado_registros_permitidos + $value->registros_permitidos ?>
+		<?php endforeach ?>
+		</ul>
+	</p>
+
+	<p>Registros realizados: <u><?php echo $registros ?></u></p>
+
+	<p>Saldo de registros: 
+	<?php if ($registros <= $acumulado_registros_permitidos): ?>
+		<u class=" alert-success"><?php echo $registros." de ".$acumulado_registros_permitidos ?></u>
+
+	<?php else: ?>
+		<u class=" alert-danger"><?php echo $registros." de ".$acumulado_registros_permitidos ?></u>
+	<?php endif ?>
+
+	</p>
+  </div>
+</div>
+	<button onclick="window.print()" class="btn btn-default">Imprimir</button>
+  <?php echo Html::link("equipo/","Atras","class='btn btn-default'") ?>
+<br>
+<br>
+<br>
+<br>

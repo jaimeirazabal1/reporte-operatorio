@@ -1,0 +1,19 @@
+<?php View::content() ?>
+<div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+		<?php echo Form::open() ?>
+		<div class="form-group">
+			<label for="">Nombre de usuario</label>
+			<?php echo Form::text("usuario","class='form-control'") ?>
+		</div>
+		<div class="form-group">
+			<label for="">Contraseña</label>
+			<?php echo Form::pass("password","class='form-control'") ?>
+		</div>
+		<?php echo Form::hidden("path") ?>
+		<?php echo Form::submit("Login!","class='btn btn-success btn-xs'") ?>
+		<?php echo Form::close() ?>
+	</div>
+	<div class="col-md-4"></div>
+</div>

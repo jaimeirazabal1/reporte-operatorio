@@ -1,0 +1,10 @@
+<?php View::content() ?>
+<?php echo Html::link("equipo/","Atras","class='btn btn-danger'") ?>
+<?php echo Form::open() ?>
+<div class="form-group">
+	<label for="">Seleccione el Plan</label>
+	<?php echo Form::dbselect("plan_equipo.plan_id",null,null,"Seleccione","class='form-control'") ?>
+	<?php echo Form::hidden("plan_equipo.equipo_id") ?>
+</div>
+<?php echo Form::submit("Agregar","class='btn btn-default'") ?>
+<?php echo Form::close() ?>

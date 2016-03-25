@@ -1,0 +1,56 @@
+<?php View::content() ?>
+<table class="table">
+	<thead>
+		<th>ID</th>
+		<th>Nombre Abreviado</th>
+		<th>Administrador</th>
+		<th>Plan Contratado</th>
+		<th>Consumo</th>
+		<th>Accion</th>
+	</thead>
+	<?php if (empty($equipos)): ?>
+		<tr>
+			<td colspan="6" align="center">No se encontraron registros</td>
+		</tr>
+	<?php else: ?>
+		<?php foreach ($equipos as $key => $value): ?>
+			<tr>
+				<td><?php echo $value->id ?></td>
+				<td><?php echo $value->nombres_abreviado ?></td>
+				<td><?php echo Load::model('usuario')->getNombreApellidoById($value->usuario_id) ?></td>
+				<td><?php echo Load::model('plan')->getNombrePlanById($value->plan_id) ?></td>
+				<td>
+					<?php $plan_equipo = Load::model('plan_equipo')->getMontosByEquipoId($value->id) ?>
+					<?php $intervenciones =  Load::model('equipo')->getNumeroDeIntervencionesByEquipoId($value->id) ?>
+					<?php if ($plan_equipo >= $intervenciones): ?>
+						<?php echo $intervenciones ?> <span title="No tiene Deuda" class="glyphicon glyphicon-ok-circle bg-success"></span>
+					<?php else: ?>
+						<div class="alert alert-danger">
+							<?php echo "Creditos que tiene:".$plan_equipo."<br>" ?>
+							<?php echo "Intervenciones:".$intervenciones."<br>" ?> 
+							<?php echo "La deuda es de ".($intervenciones-$plan_equipo)." creditos <br>" ?>
+							<span title="Tiene Deuda" class="glyphicon glyphicon-remove-sign bg-danger"></span>
+						</div>
+					<?php endif ?>
+					
+				</td>
+				<td>
+					<?php echo Html::link("equipo/informe/{$value->id}","<span class='glyphicon glyphicon-list-alt'></span>",'class="btn btn-default btn-xs" title="Informe"') ?>
+					<?php echo Html::link("equipo/editar/{$value->id}","<span class='glyphicon glyphicon-pencil'></span>",'class="btn btn-default btn-xs" title="Editar"') ?>
+					<?php echo Js::link("equipo/eliminar/{$value->id}","<span class='glyphicon glyphicon-remove'></span>",'Estas Seguro?','btn btn-default btn-xs',' title="Eliminar"') ?>
+					<?php echo Html::link("usuario_equipo/agregar/{$value->id}","<span class='glyphicon glyphicon-user'></span>",'class="btn btn-default btn-xs" title="Cambiar Administrador"') ?>
+					<?php echo Js::link("equipo/reset/{$value->id}","<span class='glyphicon glyphicon-refresh'></span>",'Estas Seguro de Resetear?','btn btn-default btn-xs',' title="Reset Registros"') ?>
+					<?php if ($value->pausa): ?>
+					<?php echo Html::link("equipo/pausarplay/{$value->id}","<span class='glyphicon glyphicon-play'></span>",'class="btn btn-default btn-xs" title="Play a Equipo"') ?>
+					<?php else: ?>
+					<?php echo Html::link("equipo/pausarplay/{$value->id}","<span class='glyphicon glyphicon-pause'></span>",'class="btn btn-default btn-xs" title="Pausar Equipo"') ?>
+					<?php endif ?>
+					<?php echo Html::link("equipo/agregar_plan/{$value->id}","<span class='glyphicon glyphicon-shopping-cart'></span>",'class="btn btn-default btn-xs" title="Agregar Plan"') ?>
+				</td>
+			</tr>
+		<?php endforeach ?>
+	
+	<?php endif ?>
+</table>
+
+<?php echo Html::link("equipo/crear","Crear Equipo","class='btn btn-default'") ?>

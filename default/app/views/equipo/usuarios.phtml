@@ -1,0 +1,19 @@
+<?php View::content() ?>
+	<ul class="list-group">
+<?php foreach ($equipos as $key => $value): ?>
+  <li class="list-group-item">
+	  <span class="badge"><?php echo $value->institucion ?><br><?php echo $value->departamento ?><br><?php echo $value->nombres_abreviado ?><br><?php echo $value->pais ?><br><?php echo $value->creado ?>
+	  </span>
+	  <br>
+	  <div class="clearfix"></div>
+	  <?php $integrantes = Load::model('usuario')->find_all_by_sql("select * from usuario inner join usuario_equipo on usuario_equipo.usuario_id = usuario.id where usuario_equipo.equipo_id = '$value->id'") ?>
+
+<ol>  
+<?php foreach ($integrantes as $key2 => $value2): ?>
+	<li><?php echo $value2->nombres ?> <?php echo $value2->apellidos ?> <?php echo $value2->dni ?></li>  	
+<?php endforeach ?>
+</ol>
+	
+  </li>
+<?php endforeach ?>
+</ul>

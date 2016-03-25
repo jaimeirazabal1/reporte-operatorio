@@ -1,0 +1,44 @@
+<?php View::content() ?>
+<?php echo Form::open() ?>
+	<div class="alert alert-info">
+		La pagina para generar los codigos para convertir los pdf es: http://www.pdfaid.com/api-registration.aspx <br>
+		Cuando la conversion de los pdf de error, pues tienes que ir a esta pagina y poner un correo falso con un nombre falso,
+		el correo debe cumplir con las normas de un correo normal xxx@xxx.com <br>
+		Luego que le des al boton Register and get API, te dara un codigo en una ventanita modal. Ese codigo lo pegas en este formulario, y listo.
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label for="">Codigo</label>
+				<?php echo Form::text("codigo_api.codigo","class='form-control'") ?>
+			</div>
+			
+			
+		</div>
+		<div class="col-md-6">
+			
+			<div class="form-group">
+				<label for="">Creditos</label>
+				<?php echo Form::text("codigo_api.credito","class='form-control'",20) ?>
+			</div>	
+			
+		</div>
+	</div>
+	<?php echo Form::submit("Crear","class='btn btn-success'") ?>
+<?php echo Form::close() ?>
+<table class="table">
+	<thead>
+		<th>#</th>
+		<th>Codigo</th>
+		<th>Creditos</th>
+		<th>Creado</th>
+	</thead>
+	<?php foreach ($codigos as $key => $value): ?>
+		<tr>
+			<td><?php echo $value->id ?></td>
+			<td><?php echo $value->codigo ?></td>
+			<td><?php echo $value->credito ?></td>
+			<td><?php echo $value->creado ?></td>
+		</tr>
+	<?php endforeach ?>
+</table>

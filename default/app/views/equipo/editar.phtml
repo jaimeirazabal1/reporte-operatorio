@@ -1,0 +1,88 @@
+<?php View::content() ?>
+<?php echo Form::open() ?>
+<div class="form-group">
+	<label>Institucion</label>
+	<?php echo Form::hidden("equipo.id") ?>
+	<?php echo Form::text("equipo.institucion","class='form-control'  required placeholder='Institucion...'") ?>
+</div>
+<div class="form-group">
+	<label>Departamento</label>
+	<?php echo Form::text("equipo.departamento","class='form-control' required  placeholder='Departamento...'") ?>
+</div>
+<div class="form-group">
+	<label>Especialidades</label>
+	<?php echo Form::text("equipo.especialidades","class='form-control' required  placeholder='Especialidades...'") ?>
+</div>
+<div class="form-group">
+	<label>Nombre Abreviado</label>
+	<?php echo Form::text("equipo.nombres_abreviado","class='form-control' required  placeholder='Nombre Abreviado...'") ?>
+</div>
+<div class="form-group">
+	<label>Pais</label>
+	<?php echo Form::text("equipo.pais","class='form-control' placeholder='Pais...' required ") ?>
+</div>
+<div class="form-group">
+	<label>Ciudad</label>
+	<?php echo Form::text("equipo.ciudad","class='form-control' placeholder='Ciudad...' required") ?>
+</div>
+<div class="form-group">
+	<label>Plan Asignado</label>
+	<?php echo Form::dbselect("equipo.plan_id",null,null,"Plan","class='form-control' required") ?>
+</div>
+<div class="form-group">
+	<label>Administrador <a href="javascript:void(0)" id="actualizar_lista" title="Actualizar Lista"><span class="glyphicon glyphicon-refresh"></span></a></label>
+	<select name="equipo[usuario_id]" required class='form-control' id="administradores">
+		<option>Administrador</option>
+		<?php $administradores = Load::model("usuario")->find("conditions: activo=1 and rol=3") ?>
+		<?php foreach ($administradores as $key => $value): ?>
+		<?php if ($equipo->usuario_id == $value->id): ?>
+			<option value="<?php echo $value->id ?>" selected><?php echo $value->nombres." ".$value->apellidos ?></option>
+
+		<?php else: ?>
+			<option value="<?php echo $value->id ?>"><?php echo $value->nombres." ".$value->apellidos ?></option>
+		<?php endif ?>
+		<?php endforeach ?>
+	</select>
+	<div class="cargando"></div>
+	<br>
+	<?php echo Html::link("usuario/crearadministrador?rol=3","Crear Administrador","class='btn btn-default btn-xs' target='_blank'") ?>
+</div>
+<?php echo Form::submit("Editar Equipo","class='btn btn-default'") ?>
+<?php echo Html::link("equipo/","Cancelar","class='btn btn-default'") ?>
+</form>
+<br>
+<br>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('body').on('change',"#administradores",function(){
+			var id = $(this).val();
+			if (id) {
+				$('.cargando').text("Cargando...");
+				$.ajax({
+					url:'../usuario/get_administradores_ajax/'+id,
+					dataType:'json',
+					async:false,
+					success:function(r){
+						if (r) {
+							$('.cargando').text("");
+							$("#equipo_ciudad").val(r.ciudad);
+							$("#equipo_pais").val(r.pais);
+						};
+					}
+				})
+			};
+		})
+		$('body').on('click',"#actualizar_lista",function(){
+			$('.cargando').text("Cargando...");
+			$.ajax({
+				url:'../usuario/get_administradores',
+				async:false,
+				success:function(r){
+					$("#administradores").html(r);
+					$('.cargando').text("");
+				}
+			})
+			return false;
+		})
+	})
+</script>
